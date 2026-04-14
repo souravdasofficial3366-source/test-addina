@@ -1,0 +1,137 @@
+.footer {
+  background: var(--clr-heading);
+  color: rgba(255,255,255,0.7);
+  padding: 80px 0 0;
+}
+
+.footer__grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr 1fr 1fr;
+  gap: 40px;
+  padding-bottom: 50px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.footer__logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.footer__logo span {
+  font-size: 1.3rem;
+  font-weight: var(--fw-bold);
+  color: var(--clr-white);
+  letter-spacing: 2px;
+}
+
+.footer__text {
+  color: rgba(255,255,255,0.6);
+  font-size: var(--fs-small);
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+.footer__social {
+  display: flex;
+  gap: 10px;
+}
+
+.footer__social a {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,0.7);
+  font-size: 13px;
+  transition: var(--transition);
+}
+
+.footer__social a:hover {
+  background: var(--clr-primary);
+  border-color: var(--clr-primary);
+  color: var(--clr-white);
+}
+
+.footer__heading {
+  color: var(--clr-white);
+  font-size: 1.1rem;
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.footer__contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 14px;
+  font-size: var(--fs-small);
+}
+
+.footer__contact-item svg {
+  font-size: 18px;
+  color: var(--clr-primary);
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.footer__links {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footer__links a {
+  font-size: var(--fs-small);
+  color: rgba(255,255,255,0.6);
+  transition: var(--transition);
+}
+
+.footer__links a:hover {
+  color: var(--clr-primary);
+  padding-left: 6px;
+}
+
+.footer__bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 0;
+  font-size: var(--fs-small);
+}
+
+.footer__payments {
+  display: flex;
+  gap: 10px;
+}
+
+.payment-icon {
+  padding: 4px 12px;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  font-weight: var(--fw-semibold);
+  color: rgba(255,255,255,0.6);
+  letter-spacing: 1px;
+}
+
+@media (max-width: 992px) {
+  .footer__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 576px) {
+  .footer__grid {
+    grid-template-columns: 1fr;
+  }
+  .footer__bottom {
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+  }
+}

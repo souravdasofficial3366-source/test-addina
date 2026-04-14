@@ -1,0 +1,103 @@
+.shop__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 40px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--clr-border);
+}
+
+.shop__count {
+  font-weight: var(--fw-semibold);
+  color: var(--clr-heading);
+  margin-bottom: 0;
+}
+
+.shop__toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.shop__filter-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  background: transparent;
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-small);
+  font-weight: var(--fw-semibold);
+  color: var(--clr-heading);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.shop__filter-btn:hover {
+  border-color: var(--clr-primary);
+  color: var(--clr-primary);
+}
+
+.shop__select {
+  padding: 10px 16px;
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-small);
+  color: var(--clr-heading);
+  background: var(--clr-white);
+  cursor: pointer;
+  font-family: var(--ff-primary);
+}
+
+.shop__view-toggle {
+  display: flex;
+  gap: 4px;
+}
+
+.shop__view-btn {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  font-size: 16px;
+  color: var(--clr-body);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.shop__view-btn.active,
+.shop__view-btn:hover {
+  background: var(--clr-primary);
+  border-color: var(--clr-primary);
+  color: var(--clr-white);
+}
+
+.shop__products {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+}
+
+.shop__products--list {
+  grid-template-columns: 1fr;
+}
+
+@media (max-width: 1200px) {
+  .shop__products { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 992px) {
+  .shop__products { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 576px) {
+  .shop__products { grid-template-columns: 1fr; }
+  .shop__toolbar { flex-direction: column; align-items: flex-start; }
+}
