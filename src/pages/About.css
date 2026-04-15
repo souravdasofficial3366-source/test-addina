@@ -1,0 +1,110 @@
+.about__content {
+  max-width: 700px;
+}
+
+.about__desc {
+  color: var(--clr-body);
+  line-height: 1.8;
+  margin-bottom: 40px;
+}
+
+/* Skills */
+.about__skills {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.about__skill-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.about__skill-name {
+  font-weight: var(--fw-semibold);
+  color: var(--clr-heading);
+}
+
+.about__skill-percent {
+  font-weight: var(--fw-semibold);
+  color: var(--clr-primary);
+}
+
+.about__skill-track {
+  width: 100%;
+  height: 8px;
+  background: var(--clr-border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.about__skill-fill {
+  height: 100%;
+  background: var(--clr-primary);
+  border-radius: 4px;
+  transition: width 1.2s ease-out;
+}
+
+/* Features */
+.about-features__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+}
+
+.about-feature {
+  text-align: center;
+  padding: 40px 30px;
+}
+
+.about-feature__number {
+  font-size: 2.5rem;
+  font-weight: var(--fw-extrabold);
+  color: var(--clr-primary);
+  opacity: 0.3;
+  margin-bottom: 16px;
+}
+
+.about-feature h4 {
+  margin-bottom: 12px;
+}
+
+.about-feature p {
+  font-size: var(--fs-small);
+  color: var(--clr-body);
+  margin-bottom: 0;
+}
+
+/* About Responsive */
+@media (max-width: 1200px) {
+  .about-features__grid { gap: 28px; }
+}
+
+@media (max-width: 1024px) {
+  .about__content { max-width: 100%; }
+  .about-features__grid { gap: 24px; }
+  .about-feature { padding: 32px 24px; }
+}
+
+@media (max-width: 992px) {
+  .about-features__grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .about__content { max-width: 100%; }
+}
+
+@media (max-width: 768px) {
+  .about-features__grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .about-feature { padding: 28px 20px; }
+  .about-feature__number { font-size: 2rem; }
+  .about__desc { margin-bottom: 28px; }
+}
+
+@media (max-width: 576px) {
+  .about-features__grid { grid-template-columns: 1fr; gap: 14px; }
+  .about-feature { padding: 24px 16px; }
+}
+
+@media (max-width: 480px) {
+  .about__skills { gap: 18px; }
+  .about-feature { padding: 20px 14px; }
+}
