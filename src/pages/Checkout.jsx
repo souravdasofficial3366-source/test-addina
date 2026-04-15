@@ -12,7 +12,7 @@ export default function Checkout() {
     e.preventDefault();
     if (paymentMethod === 'stripe') {
       try {
-        const response = await fetch('http://localhost:4242/api/checkout', {
+        const response = await fetch('/api/checkout', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ items: cartItems })
