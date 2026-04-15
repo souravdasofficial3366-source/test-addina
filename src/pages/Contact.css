@@ -92,11 +92,35 @@
   align-self: flex-start;
 }
 
+/* Contact Responsive */
+@media (max-width: 1024px) {
+  .contact-info__card { padding: 32px 24px; }
+  .contact-form-wrap { max-width: 100%; }
+}
+
+@media (max-width: 992px) {
+  .contact-info__grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .contact-form-wrap { max-width: 100%; }
+}
+
 @media (max-width: 768px) {
-  .contact-info__grid {
-    grid-template-columns: 1fr;
-  }
-  .contact-form__row {
-    grid-template-columns: 1fr;
-  }
+  .contact-info__grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .contact-info__card { padding: 28px 18px; }
+  .contact-info__icon { width: 56px; height: 56px; font-size: 22px; }
+  .contact-form__row { grid-template-columns: 1fr; }
+  .contact-form__input,
+  .contact-form__textarea { padding: 14px 16px; }
+  .contact-form .btn { width: 100%; justify-content: center; }
+}
+
+@media (max-width: 576px) {
+  .contact-info__grid { grid-template-columns: 1fr; gap: 14px; }
+  .contact-info__card { padding: 24px 16px; }
+  .contact-form { gap: 14px; }
+  .contact-form__textarea { min-height: 120px; }
+}
+
+@media (max-width: 480px) {
+  .contact-info__card { padding: 20px 14px; }
+  .contact-info__icon { width: 50px; height: 50px; font-size: 20px; }
 }

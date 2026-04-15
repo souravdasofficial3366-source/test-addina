@@ -44,10 +44,10 @@ export default function Contact() {
       </section>
 
       <section className="contact-content-area section">
-        <div className="container" style={{ display: 'grid', gridTemplateColumns: 'minmax(300px, 1fr) 1fr', gap: '50px', alignItems: 'stretch' }}>
+        <div className="container" style={{ display: 'flex', flexDirection: 'column', gap: '50px' }}>
           
           {/* Map Side */}
-          <div className="contact-map" style={{ borderRadius: 'var(--radius-md)', overflow: 'hidden' }}>
+          <div className="contact-map" style={{ borderRadius: 'var(--radius-md)', overflow: 'hidden', width: '100%' }}>
             <iframe 
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d193595.2527999863!2d-74.14448744043954!3d40.69763123348122!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2sbd!4v1689679266104!5m2!1sen!2sbd" 
               width="100%" 
@@ -61,7 +61,7 @@ export default function Contact() {
           </div>
 
           {/* Form Side */}
-          <div className="contact-form-wrap" style={{ padding: '50px', background: 'var(--clr-white)', border: '1px solid var(--clr-border)', borderRadius: 'var(--radius-md)' }}>
+          <div className="contact-form-wrap" style={{ width: '100%', padding: '50px', background: 'var(--clr-white)', border: '1px solid var(--clr-border)', borderRadius: 'var(--radius-md)', boxSizing: 'border-box' }}>
             <div style={{ marginBottom: '30px' }}>
               <span className="section-subtitle">GET IN TOUCH</span>
               <h2 className="section-title" style={{ marginBottom: 0 }}>Send Us A Message</h2>

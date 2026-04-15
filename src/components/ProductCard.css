@@ -125,3 +125,12 @@
   margin-right: 8px;
   font-weight: var(--fw-regular);
 }
+
+@media (max-width: 992px) {
+  .product-card__actions {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+    bottom: 10px;
+  }
+}

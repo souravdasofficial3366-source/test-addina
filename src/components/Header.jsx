@@ -10,9 +10,10 @@ import './Header.css';
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
+  const [wishlistOpen, setWishlistOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const { cartItems, cartCount, wishlistCount, removeFromCart, updateQuantity } = useCart();
+  const { cartItems, cartCount, wishlistItems, wishlistCount, removeFromCart, updateQuantity, toggleWishlist } = useCart();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -33,12 +34,13 @@ export default function Header() {
   useEffect(() => {
     setMenuOpen(false);
     setCartOpen(false);
+    setWishlistOpen(false);
   }, [location]);
 
   useEffect(() => {
-    document.body.style.overflow = (menuOpen || cartOpen) ? 'hidden' : '';
+    document.body.style.overflow = (menuOpen || cartOpen || wishlistOpen) ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
-  }, [menuOpen, cartOpen]);
+  }, [menuOpen, cartOpen, wishlistOpen]);
 
   const cartTotal = cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
 
@@ -46,6 +48,26 @@ export default function Header() {
     <>
       <header className={`header ${scrolled ? 'header--scrolled' : ''}`} id="main-header">
         <div className="container header__inner">
+          <div className="header__left-actions mobile-only-flex">
+            <button
+              className="header__icon-btn search-icon-mobile"
+              onClick={() => { /* Toggle mobile search logic if needed, or focus */ }}
+              aria-label="Search"
+            >
+              <FiSearch />
+            </button>
+            <button
+              className={`header__hamburger ${menuOpen ? 'active' : ''}`}
+              onClick={() => setMenuOpen(!menuOpen)}
+              aria-label="Toggle menu"
+              id="menu-toggle"
+            >
+              <span></span>
+              <span></span>
+              <span></span>
+            </button>
+          </div>
+
           <Link to="/" className="header__logo" id="logo-link">
             <svg className="header__logo-icon" viewBox="0 0 40 40" width="32" height="32">
               <circle cx="20" cy="12" r="8" fill="var(--clr-primary)" opacity="0.8"/>
@@ -57,7 +79,7 @@ export default function Header() {
           </Link>
 
           <div className="header__actions">
-            <form className="header__search-form" onSubmit={handleSearch}>
+            <form className="header__search-form desktop-only-flex" onSubmit={handleSearch}>
               <input 
                 type="text" 
                 placeholder="Search products..." 
@@ -69,7 +91,12 @@ export default function Header() {
                 <FiSearch />
               </button>
             </form>
-            <button className="header__icon-btn" id="wishlist-btn" aria-label="Wishlist">
+            <button 
+              className="header__icon-btn desktop-only-flex" 
+              id="wishlist-btn" 
+              aria-label="Wishlist"
+              onClick={() => setWishlistOpen(true)}
+            >
               <FiHeart />
               {wishlistCount > 0 && <span className="header__badge">{wishlistCount}</span>}
             </button>
@@ -83,10 +110,9 @@ export default function Header() {
               {cartCount > 0 && <span className="header__badge">{cartCount}</span>}
             </button>
             <button
-              className={`header__hamburger ${menuOpen ? 'active' : ''}`}
+              className={`header__hamburger desktop-only-flex ${menuOpen ? 'active' : ''}`}
               onClick={() => setMenuOpen(!menuOpen)}
               aria-label="Toggle menu"
-              id="menu-toggle"
             >
               <span></span>
               <span></span>
@@ -96,10 +122,19 @@ export default function Header() {
         </div>
       </header>
 
+      {/* Sticky Mobile Wishlist Pop-up */}
+      <button 
+        className="mobile-wishlist-popup mobile-only-flex" 
+        onClick={() => setWishlistOpen(true)}
+      >
+        ❤️
+        {wishlistCount > 0 && <span className="mobile-wishlist-badge">{wishlistCount}</span>}
+      </button>
+
       {/* Sidebar Menu Overlay */}
       <div 
-        className={`sidebar-overlay ${(menuOpen || cartOpen) ? 'active' : ''}`} 
-        onClick={() => { setMenuOpen(false); setCartOpen(false); }} 
+        className={`sidebar-overlay ${(menuOpen || cartOpen || wishlistOpen) ? 'active' : ''}`} 
+        onClick={() => { setMenuOpen(false); setCartOpen(false); setWishlistOpen(false); }} 
       />
 
       {/* Sidebar Menu */}
@@ -220,6 +255,53 @@ export default function Header() {
             </div>
           </div>
         )}
+      </aside>
+
+      {/* Wishlist Drawer */}
+      <aside className={`cart-drawer wishlist-drawer ${wishlistOpen ? 'active' : ''}`} id="wishlist-drawer">
+        <div className="cart-drawer__header">
+          <h4 className="cart-drawer__title">My Wishlist ({wishlistCount})</h4>
+          <button className="cart-drawer__close" onClick={() => setWishlistOpen(false)} aria-label="Close wishlist">
+            <FiX />
+          </button>
+        </div>
+
+        <div className="cart-drawer__body">
+          {wishlistItems && wishlistItems.length === 0 ? (
+            <div className="cart-drawer__empty">
+              <FiHeart className="cart-drawer__empty-icon" />
+              <p>Your wishlist is currently empty.</p>
+              <Link to="/shop" className="btn btn--primary" onClick={() => setWishlistOpen(false)}>
+                EXPLORE PRODUCTS
+              </Link>
+            </div>
+          ) : (
+            <ul className="cart-drawer__items">
+              {wishlistItems && wishlistItems.map((item) => (
+                <li className="cart-item" key={`wishlist-${item.id}`}>
+                  <Link to={`/product/${item.id}`} onClick={() => setWishlistOpen(false)}>
+                    <img src={item.image} alt={item.name} className="cart-item__image" />
+                  </Link>
+                  <div className="cart-item__info">
+                    <Link to={`/product/${item.id}`} className="cart-item__name" onClick={() => setWishlistOpen(false)}>
+                      {item.name}
+                    </Link>
+                    <div className="cart-item__price">${item.price.toFixed(2)}</div>
+                    <div className="cart-item__qty-wrap">
+                      <button 
+                        className="btn btn--outline" 
+                        style={{ padding: '6px 12px', fontSize: '12px' }}
+                        onClick={() => toggleWishlist(item)}
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </aside>
     </>
   );

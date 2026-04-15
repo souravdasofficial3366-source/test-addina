@@ -274,18 +274,52 @@
   gap: 30px;
 }
 
+/* ProductDetails Responsive */
+@media (max-width: 1200px) {
+  .pd__grid { gap: 36px; }
+  .pd__related-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 1024px) {
+  .pd__grid { gap: 28px; }
+  .pd__related-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .pd__main-image { min-height: 360px; }
+}
+
 @media (max-width: 992px) {
-  .pd__grid { grid-template-columns: 1fr; }
+  .pd__grid { grid-template-columns: 1fr; gap: 24px; }
   .pd__related-grid { grid-template-columns: repeat(2, 1fr); }
+  .pd__main-image { min-height: 320px; }
 }
 
 @media (max-width: 768px) {
-  .pd__gallery { flex-direction: column-reverse; }
-  .pd__thumbnails { flex-direction: row; }
-  .pd__thumb { width: 70px; height: 70px; }
-  .pd__main-image { min-height: 280px; }
+  .pd__gallery { flex-direction: column-reverse; gap: 12px; }
+  .pd__thumbnails { flex-direction: row; justify-content: center; }
+  .pd__thumb { width: 68px; height: 68px; }
+  .pd__main-image { min-height: 260px; }
+  .pd__name { font-size: clamp(1.2rem, 3vw, 1.5rem); }
+  .pd__price-current { font-size: 1.5rem; }
+  .pd__actions { gap: 10px; }
+  .pd__add-cart { flex: 1; justify-content: center; }
+  .pd__tab-btn { padding: 12px 18px; font-size: 12px; }
+  .pd__tab-header { overflow-x: auto; white-space: nowrap; flex-wrap: nowrap; }
+  .pd__tabs { margin-top: 40px; }
+  .pd__related { margin-top: 40px; }
 }
 
 @media (max-width: 576px) {
+  .pd__thumb { width: 58px; height: 58px; }
+  .pd__main-image { min-height: 220px; padding: 12px; }
+  .pd__related-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .pd__actions { flex-wrap: wrap; }
+  .pd__quantity { width: 100%; justify-content: center; }
+  .pd__add-cart { width: 100%; justify-content: center; }
+  .pd__tabs { margin-top: 32px; }
+}
+
+@media (max-width: 480px) {
   .pd__related-grid { grid-template-columns: 1fr; }
+  .pd__thumb { width: 52px; height: 52px; }
+  .pd__main-image { min-height: 200px; }
+  .pd__tab-btn { padding: 10px 14px; }
 }

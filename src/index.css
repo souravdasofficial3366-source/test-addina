@@ -37,6 +37,11 @@
   --container-max: 1350px;
   --container-padding: 15px;
 
+  /* Responsive font scaling */
+  --fs-h3: clamp(1.35rem, 2.5vw, 1.75rem);
+  --fs-h4: clamp(1.2rem, 2vw, 1.5rem);
+  --fs-h5: clamp(1.05rem, 1.5vw, 1.25rem);
+
   --transition: all 0.4s ease-in-out;
   --shadow-card: 0 2px 20px rgba(0,0,0,0.06);
   --shadow-hover: 0 8px 30px rgba(0,0,0,0.12);
@@ -252,28 +257,60 @@ p {
 }
 
 /* ===== RESPONSIVE ===== */
-@media (max-width: 1200px) {
-  .grid-4 { grid-template-columns: repeat(3, 1fr); }
+
+/* Large desktop: 1400px+ uses defaults */
+
+/* Standard desktop / 16" laptop */
+@media (max-width: 1400px) {
+  :root { --container-max: 1200px; }
 }
 
-@media (max-width: 992px) {
+/* Small laptop / MacBook 13-14" */
+@media (max-width: 1200px) {
+  :root { --container-padding: 20px; }
+  .grid-4 { grid-template-columns: repeat(3, 1fr); }
+  .section { padding: 70px 0; }
+}
+
+/* Landscape tablet / small laptop */
+@media (max-width: 1024px) {
+  :root { --container-padding: 24px; }
   .grid-4 { grid-template-columns: repeat(2, 1fr); }
   .grid-3 { grid-template-columns: repeat(2, 1fr); }
   .section { padding: 60px 0; }
 }
 
+/* Portrait tablet */
+@media (max-width: 992px) {
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+  .grid-3 { grid-template-columns: repeat(2, 1fr); }
+  .section { padding: 56px 0; }
+}
+
+/* Large mobile / small tablet */
 @media (max-width: 768px) {
+  :root { --container-padding: 20px; }
   .grid-4 { grid-template-columns: repeat(2, 1fr); }
   .grid-3 { grid-template-columns: 1fr; }
   .grid-2 { grid-template-columns: 1fr; }
-  .section { padding: 40px 0; }
+  .section { padding: 44px 0; }
+  .btn { padding: 14px 28px; }
 }
 
+/* Standard mobile */
 @media (max-width: 576px) {
+  :root { --container-padding: 16px; }
+  .grid-4 { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .section { padding: 36px 0; }
+  .btn { padding: 12px 24px; font-size: 12px; }
+}
+
+/* Small mobile */
+@media (max-width: 480px) {
+  :root { --container-padding: 14px; }
   .grid-4 { grid-template-columns: 1fr; }
-  :root {
-    --container-padding: 15px;
-  }
+  .grid-3 { grid-template-columns: 1fr; }
+  .grid-2 { grid-template-columns: 1fr; }
 }
 
 /* ===== ANIMATIONS ===== */

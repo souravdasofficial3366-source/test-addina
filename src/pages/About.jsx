@@ -38,8 +38,8 @@ export default function About() {
       <PageBanner title="About us" breadcrumbs={['Home', 'About Us']} />
 
       <section className="about section">
-        <div className="container" style={{ display: 'grid', gridTemplateColumns: 'minmax(300px, 1fr) 1fr', gap: '60px', alignItems: 'stretch' }}>
-          <div className="about__content" style={{ display: 'flex', flexDirection: 'column' }}>
+        <div className="container about-container">
+          <div className="about__content">
             <span className="section-subtitle">WE DESIGN FURNITURE</span>
             <h2 className="section-title">Our Core Divisions</h2>
             <p className="about__desc">
@@ -65,13 +65,13 @@ export default function About() {
               ))}
             </div>
 
-            <div className="about__inline-image" style={{ marginTop: '40px' }}>
-              <img src={roomLifestyle} alt="Deep Interior" style={{ width: '100%', height: '240px', objectFit: 'cover', borderRadius: 'var(--radius-md)' }} />
+            <div className="about__inline-image">
+              <img src={roomLifestyle} alt="Deep Interior" className="about__inline-img" />
             </div>
           </div>
           
-          <div className="about__image-right" style={{ position: 'relative', overflow: 'hidden', borderRadius: 'var(--radius-md)' }}>
-            <img src={blogInterior} alt="Our Core Divisions" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', boxShadow: 'var(--shadow-hover)' }} />
+          <div className="about__image-right">
+            <img src={blogInterior} alt="Our Core Divisions" className="about__right-img" />
           </div>
         </div>
       </section>

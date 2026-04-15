@@ -136,14 +136,21 @@ export default function Home() {
         <div className="container">
           <div className="promo__grid">
             {promoBanners.map((banner) => (
-              <div className="promo-card" key={banner.id} style={{ background: banner.bgColor }}>
+              <div 
+                className="promo-card" 
+                key={banner.id} 
+                style={{ 
+                  background: banner.bgColor, 
+                  backgroundImage: `url(${banner.image})`,
+                  backgroundPosition: 'right center',
+                  backgroundSize: 'contain',
+                  backgroundRepeat: 'no-repeat'
+                }}
+              >
                 <div className="promo-card__content">
                   <span className="promo-card__subtitle">{banner.subtitle}</span>
                   <h3 className="promo-card__title">{banner.title}</h3>
                   <Link to="/shop" className="btn btn--primary">BUY NOW <FiChevronRight /></Link>
-                </div>
-                <div className="promo-card__image">
-                  <img src={banner.image} alt={banner.title} />
                 </div>
               </div>
             ))}
