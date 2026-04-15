@@ -4,7 +4,8 @@ import { FiTruck, FiRotateCcw, FiHeadphones, FiShield, FiChevronLeft, FiChevronR
 import { FaQuoteRight } from 'react-icons/fa';
 import ProductCard from '../components/ProductCard';
 import StarRating from '../components/StarRating';
-import { products, heroData, promoBanners, services, blogPosts, testimonials } from '../data/products';
+import { heroData, promoBanners, services, blogPosts, testimonials } from '../data/products';
+import { useProducts } from '../hooks/useProducts';
 import roomLifestyle from '../assets/images/room-lifestyle.png';
 import blogInterior from '../assets/images/blog-interior.png';
 import './Home.css';
@@ -22,6 +23,8 @@ export default function Home() {
   const [testimonialIndex, setTestimonialIndex] = useState(0);
   const [heroIndex, setHeroIndex] = useState(0);
 
+  const { products, loading } = useProducts();
+
   const featuredProducts = products.slice(0, 6);
   const trendyProducts = products.slice(0, 8);
   const filters = ['All Collection', 'New In', 'Top Rated', 'Tensing Items'];
@@ -35,7 +38,7 @@ export default function Home() {
   const filteredProducts = activeFilter === 'All Collection'
     ? trendyProducts
     : activeFilter === 'New In'
-    ? trendyProducts.filter(p => p.badge === 'NEW' || p.badgeType === 'new')
+    ? trendyProducts.filter(p => p.badge?.toUpperCase() === 'NEW' || p.badge_type === 'new')
     : activeFilter === 'Top Rated'
     ? trendyProducts.filter(p => p.rating > 0)
     : trendyProducts.slice(0, 4);
@@ -167,22 +170,26 @@ export default function Home() {
           </div>
         </div>
         <div className="sprinklr-slider-container" onWheel={handleFeaturedWheel} style={{ touchAction: 'pan-y' }}>
-          <div className="sprinklr-cards">
-            {[...featuredProducts.slice(featuredIndex), ...featuredProducts.slice(0, featuredIndex)].slice(0, 3).map((product, idx) => (
-              <div key={product.id} className={`sprinklr-card ${idx === 1 ? 'sprinklr-card--center' : ''}`} onClick={() => handleCardClick(idx)}>
-                <div className="sprinklr-card__header">
-                  <span className="sprinklr-card__badge">{product.badge || 'FEATURED'}</span>
-                  <h4 className="sprinklr-card__title">{product.name}</h4>
+          {loading && products.length === 0 ? (
+            <div style={{ textAlign: 'center', padding: '40px' }}>Loading products...</div>
+          ) : (
+            <div className="sprinklr-cards">
+              {[...featuredProducts.slice(featuredIndex), ...featuredProducts.slice(0, featuredIndex)].slice(0, 3).map((product, idx) => (
+                <div key={product.id} className={`sprinklr-card ${idx === 1 ? 'sprinklr-card--center' : ''}`} onClick={() => handleCardClick(idx)}>
+                  <div className="sprinklr-card__header">
+                    <span className="sprinklr-card__badge">{product.badge || 'FEATURED'}</span>
+                    <h4 className="sprinklr-card__title">{product.name}</h4>
+                  </div>
+                  <div className="sprinklr-card__image-container">
+                    <img src={product.image} alt={product.name} />
+                  </div>
+                  <Link to={`/product/${product.id}`} className="sprinklr-card__explore" onClick={(e) => { if(idx !== 1) e.preventDefault(); }}>
+                    <FiChevronRight className="sprinklr-card__explore-icon" /> Explore
+                  </Link>
                 </div>
-                <div className="sprinklr-card__image-container">
-                  <img src={product.image} alt={product.name} />
-                </div>
-                <Link to={`/product/${product.id}`} className="sprinklr-card__explore" onClick={(e) => { if(idx !== 1) e.preventDefault(); }}>
-                  <FiChevronRight className="sprinklr-card__explore-icon" /> Explore
-                </Link>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
           <div className="sprinklr-slider-indicators">
             {featuredProducts.map((_, i) => (
               <button 
@@ -260,9 +267,13 @@ export default function Home() {
             ))}
           </div>
           <div className="trendy__grid">
-            {displayProducts.map((p) => (
-              <ProductCard key={p.id} product={p} />
-            ))}
+            {loading && products.length === 0 ? (
+               <div style={{ textAlign: 'center', padding: '40px', gridColumn: '1 / -1' }}>Loading products...</div>
+            ) : (
+              displayProducts.map((p) => (
+                <ProductCard key={p.id} product={p} />
+              ))
+            )}
           </div>
         </div>
       </section>

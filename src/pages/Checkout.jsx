@@ -8,12 +8,26 @@ export default function Checkout() {
   const subtotal = cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
   const [paymentMethod, setPaymentMethod] = useState('stripe');
 
-  const handlePlaceOrder = (e) => {
+  const handlePlaceOrder = async (e) => {
     e.preventDefault();
     if (paymentMethod === 'stripe') {
-      alert("Redirecting to Stripe Checkout via API... (Requires Backend Keys)");
+      try {
+        const response = await fetch('http://localhost:4242/api/checkout', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ items: cartItems })
+        });
+        const data = await response.json();
+        if (data.url) {
+          window.location.href = data.url; // Redirect to Stripe's secure Checkout Page
+        } else {
+          alert('Payment Error: ' + data.error);
+        }
+      } catch (error) {
+        alert('Failed to connect to securely local backend server. ' + error.message);
+      }
     } else {
-      alert("Order placed successfully with " + paymentMethod);
+      alert(`Order placed successfully using ${paymentMethod}! Invoice generated.`);
     }
   };
 

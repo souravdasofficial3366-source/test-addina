@@ -6,19 +6,27 @@ import PageBanner from '../components/PageBanner';
 import StarRating from '../components/StarRating';
 import ProductCard from '../components/ProductCard';
 import { useCart } from '../context/CartContext';
-import { products } from '../data/products';
+import { products as localProducts } from '../data/products';
+import { useProducts } from '../hooks/useProducts';
 import './ProductDetails.css';
 
 export default function ProductDetails() {
   const { id } = useParams();
-  const product = products.find(p => p.id === Number(id)) || products[0];
+  const { products, loading } = useProducts();
+  const product = products.find(p => p.id.toString() === id.toString()) || products[0];
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState('description');
   const [activeImage, setActiveImage] = useState(0);
   const { addToCart, toggleWishlist, isInWishlist } = useCart();
 
-  const relatedProducts = products.filter(p => p.id !== product.id).slice(0, 4);
-  const wishlisted = isInWishlist(product.id);
+  const relatedProducts = products.filter(p => !product || p.id.toString() !== product.id.toString()).slice(0, 4);
+  const wishlisted = product ? isInWishlist(product.id) : false;
+
+  if (loading && products.length === 0) return <div style={{ padding: '100px 20px', textAlign: 'center' }}>Loading...</div>;
+  if (!product) return <div style={{ padding: '100px 20px', textAlign: 'center' }}>Product not found.</div>;
+
+  const productImages = product.images || [product.image];
+  const productTags = product.tags || [];
 
   return (
     <main className="product-details-page" id="product-details-page">
@@ -30,7 +38,7 @@ export default function ProductDetails() {
             {/* Gallery */}
             <div className="pd__gallery">
               <div className="pd__thumbnails">
-                {product.images.map((img, i) => (
+                {productImages.map((img, i) => (
                   <button
                     key={i}
                     className={`pd__thumb ${i === activeImage ? 'active' : ''}`}
@@ -41,7 +49,11 @@ export default function ProductDetails() {
                 ))}
               </div>
               <div className="pd__main-image">
-                <img src={product.images[activeImage]} alt={product.name} />
+                <img 
+                  src={productImages[activeImage]} 
+                  alt={product.name} 
+                  onError={(e) => { e.target.src = 'https://via.placeholder.com/400x500?text=No+Image' }} 
+                />
               </div>
             </div>
 
@@ -54,10 +66,10 @@ export default function ProductDetails() {
               </div>
               <h2 className="pd__name">{product.name}</h2>
               <div className="pd__price">
-                {product.originalPrice && (
-                  <span className="pd__price-old">${product.originalPrice.toFixed(2)}</span>
+                {(product.original_price || product.originalPrice) && (
+                  <span className="pd__price-old">${parseFloat(product.original_price || product.originalPrice).toFixed(2)}</span>
                 )}
-                <span className="pd__price-current">${product.price.toFixed(2)}</span>
+                <span className="pd__price-current">${parseFloat(product.price).toFixed(2)}</span>
               </div>
               <p className="pd__description">{product.description}</p>
 
@@ -80,9 +92,9 @@ export default function ProductDetails() {
               </div>
 
               <div className="pd__meta">
-                <p><strong>SKU:</strong> {product.sku}</p>
-                <p><strong>Categories:</strong> {typeof product.category === 'string' ? product.category : product.category}</p>
-                <p><strong>Tags:</strong> {product.tags.join(', ')}</p>
+                <p><strong>SKU:</strong> {product.sku || `DB-${product.id}`}</p>
+                <p><strong>Categories:</strong> {product.category || 'Uncategorized'}</p>
+                {productTags.length > 0 && <p><strong>Tags:</strong> {productTags.join(', ')}</p>}
               </div>
 
               <div className="pd__share">

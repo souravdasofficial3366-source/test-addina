@@ -1,0 +1,184 @@
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f4f7f6;
+  font-family: var(--ff-primary);
+}
+
+.admin-sidebar {
+  width: 260px;
+  background-color: var(--clr-primary);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  padding: 30px 0;
+  flex-shrink: 0;
+}
+
+.admin-sidebar__logo {
+  font-size: 24px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 40px;
+  letter-spacing: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.admin-sidebar__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.admin-sidebar__link {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px 30px;
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  font-size: 16px;
+  transition: 0.3s ease;
+  cursor: pointer;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+}
+
+.admin-sidebar__link:hover,
+.admin-sidebar__link.active {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border-left: 4px solid #fff;
+}
+
+.admin-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-header {
+  background: #fff;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+}
+
+.admin-header h2 {
+  font-size: 22px;
+  color: var(--clr-dark);
+}
+
+.admin-container {
+  padding: 40px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.admin-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 25px;
+  margin-bottom: 40px;
+}
+
+.admin-stat-card {
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.admin-stat-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  background: rgba(181, 135, 109, 0.1);
+  color: var(--clr-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin-right: 20px;
+}
+
+.admin-stat-info h4 {
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.admin-stat-info h3 {
+  font-size: 24px;
+  color: var(--clr-dark);
+  font-weight: 700;
+}
+
+.admin-chart-card,
+.admin-table-card,
+.admin-form-card {
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  margin-bottom: 30px;
+}
+
+.admin-chart-card h3 {
+  margin-bottom: 25px;
+  color: var(--clr-dark);
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 15px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.admin-table th {
+  color: #888;
+  font-size: 13px;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.admin-table td {
+  color: #444;
+  vertical-align: middle;
+}
+
+/* Rest of standard Admin CSS retained */
+.admin-notification { background: #d4edda; color: #155724; padding: 15px; border-radius: 8px; margin-bottom: 25px; display: flex; align-items: center; gap: 10px; }
+.admin-error { background: #f8d7da; color: #721c24; padding: 15px; border-radius: 8px; margin-bottom: 25px; }
+.admin-table-img { width: 45px; height: 45px; border-radius: 6px; object-fit: cover; }
+.action-buttons { display: flex; gap: 10px; }
+.action-btn { background: none; border: none; font-size: 18px; cursor: pointer; color: #666; transition: 0.2s; }
+.action-btn.edit:hover { color: var(--clr-primary); }
+.action-btn.delete:hover { color: #dc3545; }
+.badge-pill { padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+.badge--sale { background: rgba(181, 135, 109, 0.15); color: var(--clr-primary); }
+.badge--new { background: #222; color: #fff; }
+.form-group { margin-bottom: 20px; display: flex; flex-direction: column; gap: 8px; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+.form-group input, .form-group select { padding: 12px 15px; border: 1px solid #ddd; border-radius: 6px; width: 100%; font-size: 15px; }
+.form-actions { display: flex; justify-content: flex-end; gap: 15px; margin-top: 30px; }

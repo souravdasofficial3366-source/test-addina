@@ -12,10 +12,16 @@ export default function ProductCard({ product }) {
     <div className="product-card" id={`product-card-${product.id}`}>
       <div className="product-card__image-wrap">
         <Link to={`/product/${product.id}`}>
-          <img src={product.image} alt={product.name} className="product-card__image" loading="lazy" />
+          <img 
+            src={product.image} 
+            alt={product.name} 
+            className="product-card__image" 
+            loading="lazy" 
+            onError={(e) => { e.target.src = 'https://via.placeholder.com/400x500?text=No+Image' }} 
+          />
         </Link>
         {product.badge && (
-          <span className={`product-card__badge product-card__badge--${product.badgeType}`}>
+          <span className={`product-card__badge product-card__badge--${product.badge_type || product.badgeType || 'default'}`}>
             {product.badge}
           </span>
         )}
@@ -43,10 +49,10 @@ export default function ProductCard({ product }) {
         <Link to={`/product/${product.id}`} className="product-card__name">{product.name}</Link>
         <StarRating rating={product.rating} />
         <p className="product-card__price">
-          {product.originalPrice && (
-            <span className="product-card__price-old">USD {product.originalPrice.toFixed(2)}</span>
+          {(product.original_price || product.originalPrice) && (
+            <span className="product-card__price-old">USD {parseFloat(product.original_price || product.originalPrice).toFixed(2)}</span>
           )}
-          USD {product.price.toFixed(2)}
+          USD {parseFloat(product.price).toFixed(2)}
         </p>
       </div>
     </div>

@@ -3,7 +3,8 @@ import { useSearchParams } from 'react-router-dom';
 import { FiGrid, FiList, FiSliders } from 'react-icons/fi';
 import PageBanner from '../components/PageBanner';
 import ProductCard from '../components/ProductCard';
-import { products } from '../data/products';
+import { products as localProducts } from '../data/products';
+import { useProducts } from '../hooks/useProducts';
 import './Shop.css';
 
 export default function Shop() {
@@ -12,10 +13,14 @@ export default function Shop() {
   const [showFilter, setShowFilter] = useState(false);
   const [searchParams] = useSearchParams();
   const searchQ = searchParams.get('search')?.toLowerCase() || '';
+  const { products, loading } = useProducts();
 
   const filteredProducts = products.filter(p => {
     if (searchQ) {
-      return p.name.toLowerCase().includes(searchQ) || p.category.toLowerCase().includes(searchQ) || p.tags.some(t => t.toLowerCase().includes(searchQ));
+      const nameMatch = p.name?.toLowerCase().includes(searchQ);
+      const catMatch = p.category?.toLowerCase().includes(searchQ);
+      const tagMatch = Array.isArray(p.tags) ? p.tags.some(t => t.toLowerCase().includes(searchQ)) : false;
+      return nameMatch || catMatch || tagMatch;
     }
     return true;
   });
@@ -73,9 +78,15 @@ export default function Shop() {
           )}
 
           <div className={`shop__products ${viewMode === 'list' ? 'shop__products--list' : ''}`}>
-            {filteredProducts.slice(0, showCount).map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
+            {loading && products.length === 0 ? (
+               <div style={{ textAlign: 'center', padding: '40px', gridColumn: '1 / -1' }}>Loading products...</div>
+            ) : filteredProducts.length > 0 ? (
+              filteredProducts.slice(0, showCount).map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))
+            ) : (
+               <div style={{ textAlign: 'center', padding: '40px', gridColumn: '1 / -1' }}>No products match your search.</div>
+            )}
           </div>
         </div>
       </section>

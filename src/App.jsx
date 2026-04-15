@@ -13,6 +13,7 @@ import Checkout from './pages/Checkout';
 import BlogDetails from './pages/BlogDetails';
 import Terms from './pages/Terms';
 import Privacy from './pages/Privacy';
+import Admin from './pages/Admin';
 
 export default function App() {
   return (
@@ -30,6 +31,7 @@ export default function App() {
         <Route path="/blog/:id" element={<BlogDetails />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/privacy" element={<Privacy />} />
+        <Route path="/admin" element={<Admin />} />
       </Routes>
       <Footer />
       <ScrollToTop />

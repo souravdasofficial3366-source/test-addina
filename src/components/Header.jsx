@@ -11,6 +11,7 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [wishlistOpen, setWishlistOpen] = useState(false);
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const { cartItems, cartCount, wishlistItems, wishlistCount, removeFromCart, updateQuantity, toggleWishlist } = useCart();
@@ -22,6 +23,7 @@ export default function Header() {
     if (searchTerm.trim()) {
       navigate(`/shop?search=${encodeURIComponent(searchTerm)}`);
       setSearchTerm('');
+      setMobileSearchOpen(false);
     }
   };
 
@@ -51,7 +53,7 @@ export default function Header() {
           <div className="header__left-actions mobile-only-flex">
             <button
               className="header__icon-btn search-icon-mobile"
-              onClick={() => { /* Toggle mobile search logic if needed, or focus */ }}
+              onClick={() => setMobileSearchOpen(!mobileSearchOpen)}
               aria-label="Search"
             >
               <FiSearch />
@@ -120,6 +122,24 @@ export default function Header() {
             </button>
           </div>
         </div>
+        
+        {mobileSearchOpen && (
+          <form className="header__mobile-search-form" onSubmit={handleSearch} style={{ padding: '10px 15px', background: '#fff', borderTop: '1px solid #eee' }}>
+            <div style={{ display: 'flex', border: '1px solid #ddd', borderRadius: '4px', overflow: 'hidden' }}>
+              <input 
+                type="text" 
+                placeholder="Search products..." 
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                style={{ flex: 1, padding: '10px', border: 'none', outline: 'none' }}
+                autoFocus
+              />
+              <button type="submit" style={{ padding: '0 15px', background: 'var(--clr-primary)', color: '#fff', border: 'none' }}>
+                <FiSearch />
+              </button>
+            </div>
+          </form>
+        )}
       </header>
 
       {/* Sticky Mobile Wishlist Pop-up */}
