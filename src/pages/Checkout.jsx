@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useCart } from '../context/CartContext';
+import { supabase } from '../supabaseClient';
 import PageBanner from '../components/PageBanner';
 import './Checkout.css';
 
@@ -7,15 +8,49 @@ export default function Checkout() {
   const { cartItems } = useCart();
   const subtotal = cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
   const [paymentMethod, setPaymentMethod] = useState('stripe');
+  const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState(null);
+
+  const [formData, setFormData] = useState({
+    firstName: '', lastName: '', email: '', phone: '', address: '', city: '', state: '', zip: '', country: 'us'
+  });
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        setUser(session.user);
+        const metadata = session.user.user_metadata;
+        setFormData(prev => ({
+          ...prev,
+          firstName: metadata.full_name?.split(' ')[0] || '',
+          lastName: metadata.full_name?.split(' ').slice(1).join(' ') || '',
+          email: session.user.email || '',
+          phone: metadata.phone || '',
+          address: metadata.address || '',
+          city: metadata.city || '',
+          zip: metadata.zip || ''
+        }));
+      }
+    };
+    fetchUser();
+  }, []);
+
+  const handleInputChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const handlePlaceOrder = async (e) => {
     e.preventDefault();
+    setLoading(true);
     if (paymentMethod === 'stripe') {
       try {
         const response = await fetch('/api/checkout', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ items: cartItems })
+          body: JSON.stringify({ 
+            items: cartItems,
+            userId: user?.id,
+            customerEmail: formData.email
+          })
         });
         const data = await response.json();
         if (data.url) {
@@ -46,11 +81,11 @@ export default function Checkout() {
               <div className="checkout__row">
                 <div className="checkout__field">
                   <label>First Name *</label>
-                  <input type="text" required className="checkout__input" />
+                  <input type="text" name="firstName" value={formData.firstName} onChange={handleInputChange} required className="checkout__input" />
                 </div>
                 <div className="checkout__field">
                   <label>Last Name *</label>
-                  <input type="text" required className="checkout__input" />
+                  <input type="text" name="lastName" value={formData.lastName} onChange={handleInputChange} required className="checkout__input" />
                 </div>
               </div>
 
@@ -61,7 +96,7 @@ export default function Checkout() {
 
               <div className="checkout__field">
                 <label>Country / Region *</label>
-                <select required className="checkout__select">
+                <select name="country" value={formData.country} onChange={handleInputChange} required className="checkout__select">
                   <option value="us">United States (US)</option>
                   <option value="uk">United Kingdom (UK)</option>
                   <option value="ca">Canada</option>
@@ -77,34 +112,34 @@ export default function Checkout() {
 
               <div className="checkout__field">
                 <label>Street Address *</label>
-                <input type="text" placeholder="House number and street name" required className="checkout__input" />
+                <input type="text" name="address" value={formData.address} onChange={handleInputChange} placeholder="House number and street name" required className="checkout__input" />
                 <input type="text" placeholder="Apartment, suite, unit etc. (optional)" className="checkout__input" />
               </div>
 
               <div className="checkout__field">
                 <label>Town / City *</label>
-                <input type="text" required className="checkout__input" />
+                <input type="text" name="city" value={formData.city} onChange={handleInputChange} required className="checkout__input" />
               </div>
 
               <div className="checkout__row">
                 <div className="checkout__field">
                   <label>State / County *</label>
-                  <input type="text" required className="checkout__input" />
+                  <input type="text" name="state" value={formData.state} onChange={handleInputChange} required className="checkout__input" />
                 </div>
                 <div className="checkout__field">
                   <label>Postcode / ZIP *</label>
-                  <input type="text" required className="checkout__input" />
+                  <input type="text" name="zip" value={formData.zip} onChange={handleInputChange} required className="checkout__input" />
                 </div>
               </div>
 
               <div className="checkout__row">
                 <div className="checkout__field">
                   <label>Phone *</label>
-                  <input type="tel" required className="checkout__input" />
+                  <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} required className="checkout__input" />
                 </div>
                 <div className="checkout__field">
                   <label>Email Address *</label>
-                  <input type="email" required className="checkout__input" />
+                  <input type="email" name="email" value={formData.email} onChange={handleInputChange} required className="checkout__input" />
                 </div>
               </div>
 

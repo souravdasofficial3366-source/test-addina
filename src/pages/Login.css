@@ -1,0 +1,115 @@
+.login-container {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.login-card {
+  background: white;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  width: 100%;
+  max-width: 450px;
+  text-align: center;
+}
+
+.login-card h2 {
+  font-family: 'Sora', sans-serif;
+  font-size: 32px;
+  color: #1a1a1a;
+  margin-bottom: 10px;
+}
+
+.login-card p {
+  color: #666;
+  margin-bottom: 30px;
+  font-size: 16px;
+}
+
+.social-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.social-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 14px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid #eee;
+  text-decoration: none;
+}
+
+.social-btn.google {
+  background: white;
+  color: #333;
+}
+
+.social-btn.google:hover {
+  background: #f8f9fa;
+  border-color: #ddd;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.social-btn.github {
+  background: #24292e;
+  color: white;
+  border-color: #24292e;
+}
+
+.social-btn.github:hover {
+  background: #1a1e22;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.login-divider {
+  margin: 30px 0;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #aaa;
+}
+
+.login-divider::before,
+.login-divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #eee;
+}
+
+.login-divider:not(:empty)::before {
+  margin-right: 15px;
+}
+
+.login-divider:not(:empty)::after {
+  margin-left: 15px;
+}
+
+.login-footer {
+  margin-top: 30px;
+  font-size: 14px;
+  color: #888;
+}
+
+.login-footer a {
+  color: #b5876d;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.btn-icon {
+  font-size: 20px;
+}

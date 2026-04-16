@@ -8,7 +8,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { items } = req.body;
+    const { items, userId, customerEmail } = req.body;
 
     if (!items || items.length === 0) {
       return res.status(400).json({ error: 'Cart is empty.' });
@@ -27,8 +27,13 @@ export default async function handler(req, res) {
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
+      customer_email: customerEmail,
+      client_reference_id: userId,
       line_items,
       mode: 'payment',
+      metadata: {
+        userId: userId || 'guest'
+      },
       // Dynamic host detection for dev vs prod
       success_url: `${req.headers.origin}/checkout?success=true&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${req.headers.origin}/cart?canceled=true`,

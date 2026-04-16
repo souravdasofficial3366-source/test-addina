@@ -13,6 +13,8 @@ import Checkout from './pages/Checkout';
 import BlogDetails from './pages/BlogDetails';
 import Terms from './pages/Terms';
 import Privacy from './pages/Privacy';
+import Login from './pages/Login';
+import Profile from './pages/Profile';
 import Admin from './pages/Admin';
 
 export default function App() {
@@ -31,6 +33,8 @@ export default function App() {
         <Route path="/blog/:id" element={<BlogDetails />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/privacy" element={<Privacy />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="/admin" element={<Admin />} />
       </Routes>
       <Footer />

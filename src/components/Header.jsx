@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { FiHeart, FiSearch, FiX, FiTrash2 } from 'react-icons/fi';
+import { FiHeart, FiSearch, FiX, FiTrash2, FiUser } from 'react-icons/fi';
 import { HiOutlineShoppingBag } from 'react-icons/hi2';
 import { FaFacebookF, FaTwitter, FaYoutube, FaLinkedinIn } from 'react-icons/fa';
 import { MdOutlineLocationOn, MdOutlinePhone, MdOutlineEmail } from 'react-icons/md';
 import { useCart } from '../context/CartContext';
+import { supabase } from '../supabaseClient';
 import './Header.css';
 
 export default function Header() {
@@ -14,6 +15,7 @@ export default function Header() {
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [user, setUser] = useState(null);
   const { cartItems, cartCount, wishlistItems, wishlistCount, removeFromCart, updateQuantity, toggleWishlist } = useCart();
   const location = useLocation();
   const navigate = useNavigate();
@@ -26,6 +28,18 @@ export default function Header() {
       setMobileSearchOpen(false);
     }
   };
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -102,6 +116,13 @@ export default function Header() {
               <FiHeart />
               {wishlistCount > 0 && <span className="header__badge">{wishlistCount}</span>}
             </button>
+            <Link 
+              to={user ? "/profile" : "/login"} 
+              className="header__icon-btn" 
+              aria-label="Account"
+            >
+              <FiUser />
+            </Link>
             <button 
               className="header__icon-btn" 
               id="cart-btn" 
@@ -186,6 +207,9 @@ export default function Header() {
           <Link to="/shop" className="sidebar__nav-link">Pages</Link>
           <Link to="/shop" className="sidebar__nav-link">Blog</Link>
           <Link to="/contact" className="sidebar__nav-link">Contact</Link>
+          <Link to={user ? "/admin" : "/login"} className="sidebar__nav-link" style={{ borderTop: '1px solid #eee', marginTop: '10px', paddingTop: '10px', color: 'var(--clr-primary)', fontWeight: '600' }}>
+            {user ? "Admin Dashboard" : "Login / Register"}
+          </Link>
         </nav>
 
         <div className="sidebar__contact">

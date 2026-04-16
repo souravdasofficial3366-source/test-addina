@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
 import { 
   FiPlus, FiEdit2, FiTrash2, FiSave, FiX, FiCheckCircle,
-  FiGrid, FiBox, FiDollarSign, FiFileText, FiShoppingBag, FiUsers, FiTrendingUp
+  FiGrid, FiBox, FiDollarSign, FiFileText, FiShoppingBag, FiUsers, FiTrendingUp, FiLogOut
 } from 'react-icons/fi';
+import { useNavigate } from 'react-router-dom';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import './Admin.css';
 
@@ -23,14 +24,33 @@ const MOCK_INVOICES = [
   { id: 'INV-003', date: '2026-04-15', customer: 'Sarah Connor', amount: 300.00, status: 'Paid' },
 ];
 
+const MOCK_USERS = [
+  { id: '1', name: 'Emma Watson', email: 'emma@example.com', joined: '2026-01-12', orders: 5, totalSpent: 2450.00 },
+  { id: '2', name: 'John Doe', email: 'john@example.com', joined: '2026-02-14', orders: 2, totalSpent: 450.00 },
+  { id: '3', name: 'Sarah Connor', email: 'sarah@example.com', joined: '2026-03-20', orders: 1, totalSpent: 300.00 },
+];
+
 export default function Admin() {
-  const [activeTab, setActiveTab] = useState('analytics'); // analytics, inventory, billing
-  
+  const [activeTab, setActiveTab] = useState('analytics'); // analytics, inventory, billing, users
+  const navigate = useNavigate();
+  const [user, setUser] = useState(null);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [uploadingImage, setUploadingImage] = useState(false);
   const [error, setError] = useState(null);
   const [notification, setNotification] = useState(null);
+
+  useEffect(() => {
+    const checkUser = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        navigate('/login');
+      } else {
+        setUser(session.user);
+      }
+    };
+    checkUser();
+  }, [navigate]);
 
   const [isEditing, setIsEditing] = useState(false);
   const [currentProduct, setCurrentProduct] = useState({
@@ -184,6 +204,37 @@ export default function Admin() {
     </div>
   );
 
+  const renderUsers = () => (
+    <div className="admin-table-card">
+      <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom: '20px' }}>
+        <h3>User Management</h3>
+        <button className="btn btn--primary" onClick={() => alert('Exporting user data...')}>Export Users (CSV)</button>
+      </div>
+      <table className="admin-table">
+        <thead>
+          <tr><th>Name</th><th>Email</th><th>Joined</th><th>Orders</th><th>Spent</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+          {MOCK_USERS.map((usr) => (
+            <tr key={usr.id}>
+              <td><strong>{usr.name}</strong></td>
+              <td>{usr.email}</td>
+              <td>{usr.joined}</td>
+              <td>{usr.orders}</td>
+              <td>${usr.totalSpent.toFixed(2)}</td>
+              <td>
+                <div className="action-buttons">
+                  <button className="action-btn edit" title="View Profile" onClick={() => alert('Viewing user profile...')}>👁️</button>
+                  <button className="action-btn delete" title="Suspend User"><FiTrash2 /></button>
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+
   const renderInventory = () => (
     isEditing ? (
       <div className="admin-form-card">
@@ -269,6 +320,9 @@ export default function Admin() {
           <button className={`admin-sidebar__link ${activeTab === 'billing' ? 'active' : ''}`} onClick={() => { setActiveTab('billing'); setIsEditing(false); }}>
             <FiFileText /> Invoices & Billing
           </button>
+          <button className={`admin-sidebar__link ${activeTab === 'users' ? 'active' : ''}`} onClick={() => { setActiveTab('users'); setIsEditing(false); }}>
+            <FiUsers /> Registered Users
+          </button>
         </nav>
       </aside>
 
@@ -278,8 +332,26 @@ export default function Admin() {
             {activeTab === 'analytics' && 'Analytics Overview'}
             {activeTab === 'inventory' && 'Inventory Dashboard'}
             {activeTab === 'billing' && 'Billing & Invoices'}
+            {activeTab === 'users' && 'User Management'}
           </h2>
-          <div>Admin User</div>
+          <div className="admin-header__user" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+            <div style={{ textAlign: 'right' }}>
+              <div style={{ fontWeight: '600', fontSize: '14px' }}>{user?.user_metadata?.full_name || user?.email}</div>
+              <div style={{ fontSize: '12px', color: '#666' }}>Administrator</div>
+            </div>
+            {user?.user_metadata?.avatar_url ? (
+              <img src={user.user_metadata.avatar_url} alt="Profile" style={{ width: '35px', height: '35px', borderRadius: '50%' }} />
+            ) : (
+              <div style={{ width: '35px', height: '35px', borderRadius: '50%', background: '#eee', display: 'flex', alignItems: 'center', justifyItems: 'center', justifyContent: 'center' }}><FiUsers /></div>
+            )}
+            <button 
+              onClick={async () => { await supabase.auth.signOut(); navigate('/login'); }} 
+              style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#ff4d4d', fontSize: '20px', display: 'flex' }}
+              title="Logout"
+            >
+              <FiLogOut />
+            </button>
+          </div>
         </header>
 
         <div className="admin-container">
@@ -289,6 +361,7 @@ export default function Admin() {
           {activeTab === 'analytics' && renderAnalytics()}
           {activeTab === 'inventory' && renderInventory()}
           {activeTab === 'billing' && renderBilling()}
+          {activeTab === 'users' && renderUsers()}
         </div>
       </main>
     </div>
