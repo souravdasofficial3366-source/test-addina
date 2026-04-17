@@ -8,6 +8,8 @@ import { heroData, promoBanners, services, blogPosts, testimonials } from '../da
 import { useProducts } from '../hooks/useProducts';
 import roomLifestyle from '../assets/images/room-lifestyle.png';
 import blogInterior from '../assets/images/blog-interior.png';
+import leatherChair from '../assets/images/leather-chair.png';
+import woodenChair from '../assets/images/wooden-chair.png';
 import './Home.css';
 
 const serviceIcons = {
@@ -31,8 +33,8 @@ export default function Home() {
 
   const heroSlides = [
     heroData,
-    { badge: 'HOT DEAL', title: 'Elegant Leather Chair', description: 'Experience the premium quality and a refined look in your space.', image: products[9]?.image }, 
-    { badge: 'DISCOUNT', title: 'Minimalist Wooden Chair', description: 'Classic aesthetic for your everyday home style.', image: products[3]?.image } 
+    { badge: 'HOT DEAL', title: 'Elegant Leather Chair', description: 'Experience the premium quality and a refined look in your space.', image: leatherChair }, 
+    { badge: 'DISCOUNT', title: 'Minimalist Wooden Chair', description: 'Classic aesthetic for your everyday home style.', image: woodenChair } 
   ];
 
   const filteredProducts = activeFilter === 'All Collection'
@@ -53,6 +55,19 @@ export default function Home() {
   const handleCardClick = (idx) => {
     if (idx === 0) prevFeatured();
     if (idx === 2) nextFeatured();
+  };
+
+  let touchStartX = useRef(0);
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.changedTouches[0].screenX;
+  };
+  const handleTouchEnd = (e) => {
+    const touchEndX = e.changedTouches[0].screenX;
+    if (touchStartX.current - touchEndX > 50) {
+      nextFeatured();
+    } else if (touchEndX - touchStartX.current > 50) {
+      prevFeatured();
+    }
   };
 
   let wheelTimeout = useRef(null);
@@ -169,7 +184,13 @@ export default function Home() {
             <h2 className="section-title">Featured Product</h2>
           </div>
         </div>
-        <div className="sprinklr-slider-container" onWheel={handleFeaturedWheel} style={{ touchAction: 'pan-y' }}>
+        <div 
+          className="sprinklr-slider-container" 
+          onWheel={handleFeaturedWheel} 
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+          style={{ touchAction: 'pan-y' }}
+        >
           {loading && products.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '40px' }}>Loading products...</div>
           ) : (

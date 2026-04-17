@@ -201,13 +201,13 @@ export default function Header() {
         </div>
 
         <nav className="sidebar__nav">
-          <Link to="/" className="sidebar__nav-link">Home</Link>
-          <Link to="/about" className="sidebar__nav-link">About</Link>
-          <Link to="/shop" className="sidebar__nav-link">Shop</Link>
-          <Link to="/shop" className="sidebar__nav-link">Pages</Link>
-          <Link to="/shop" className="sidebar__nav-link">Blog</Link>
-          <Link to="/contact" className="sidebar__nav-link">Contact</Link>
-          <Link to={user ? "/admin" : "/login"} className="sidebar__nav-link" style={{ borderTop: '1px solid #eee', marginTop: '10px', paddingTop: '10px', color: 'var(--clr-primary)', fontWeight: '600' }}>
+          <Link to="/" className="sidebar__nav-link" onClick={() => setMenuOpen(false)}>Home</Link>
+          <Link to="/about" className="sidebar__nav-link" onClick={() => setMenuOpen(false)}>About</Link>
+          <Link to="/shop" className="sidebar__nav-link" onClick={() => setMenuOpen(false)}>Shop</Link>
+          <Link to="/shop" className="sidebar__nav-link" onClick={() => setMenuOpen(false)}>Pages</Link>
+          <Link to="/shop" className="sidebar__nav-link" onClick={() => setMenuOpen(false)}>Blog</Link>
+          <Link to="/contact" className="sidebar__nav-link" onClick={() => setMenuOpen(false)}>Contact</Link>
+          <Link to={user ? "/admin" : "/login"} className="sidebar__nav-link" onClick={() => setMenuOpen(false)} style={{ borderTop: '1px solid #eee', marginTop: '10px', paddingTop: '10px', color: 'var(--clr-primary)', fontWeight: '600' }}>
             {user ? "Admin Dashboard" : "Login / Register"}
           </Link>
         </nav>

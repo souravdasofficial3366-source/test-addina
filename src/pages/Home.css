@@ -743,14 +743,14 @@
 
 /* Portrait tablet */
 @media (max-width: 768px) {
-  .hero { min-height: auto; padding-top: 76px; }
+  .hero { min-height: auto; padding-top: 100px; }
   .hero__inner { padding: 40px 0; }
   .hero__image img { max-height: 280px; }
   .hero__image::before { width: 260px; height: 260px; }
   .hero__title { font-size: clamp(2rem, 6vw, 2.8rem); }
   .services__grid { grid-template-columns: 1fr; gap: 0; }
-  .service-card { padding: 20px; justify-content: center; border-bottom: 1px solid var(--clr-border); }
-  .service-card > div { text-align: left; }
+  .service-card { padding: 20px; flex-direction: column; align-items: center; text-align: center; border-bottom: 1px solid var(--clr-border); }
+  .service-card > div { text-align: center; }
   .service-card:last-child { border-bottom: none; }
   .promo-card { flex-direction: column; text-align: center; padding: 28px; min-height: auto; }
   .promo-card__image { margin-top: 20px; }
@@ -761,7 +761,13 @@
   .newsletter__input { border-radius: var(--radius-sm); }
   .newsletter__form .btn { border-radius: var(--radius-sm); width: 100%; justify-content: center; }
   .sprinklr-cards { flex-direction: column; align-items: center; }
-  .sprinklr-card { max-width: 100%; flex: 1 1 100%; min-height: auto; margin-bottom: 20px; }
+  .sprinklr-card { max-width: 100%; flex: 1 1 100%; min-height: auto; margin-bottom: 20px; position: relative; overflow: hidden; border: none; padding: 40px 20px !important; }
+  .sprinklr-card::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1; pointer-events: none; }
+  .sprinklr-card__image-container { position: absolute !important; top: 0; left: 0; width: 100%; height: 100%; margin: 0; z-index: 0; max-height: none !important; }
+  .sprinklr-card__image-container img { width: 100%; height: 100%; object-fit: cover; max-height: none !important; }
+  .sprinklr-card__header, .sprinklr-card__explore { position: relative; z-index: 2; }
+  .sprinklr-card__title, .sprinklr-card__badge, .sprinklr-card__explore, .sprinklr-card__explore-icon { color: #ffffff !important; }
+  
   /* Do not display non-center cards on mobile to avoid long scroll */
   .sprinklr-card:not(.sprinklr-card--center) { display: none; }
   .sprinklr-card--center { transform: scale(1); width: 100%; }
@@ -788,7 +794,7 @@
 
 /* Small mobile */
 @media (max-width: 480px) {
-  .hero { min-height: auto; padding: 60px 0 0 0; }
+  .hero { min-height: auto; padding: 100px 0 0 0; }
   .hero__inner { padding: 0; gap: 0; width: 100%; max-width: 100%; margin: 0; border-radius: 0; }
   .hero__content { padding: 0 20px 40px; margin: 0; border-radius: 0;}
   .hero__image { display: flex; width: 100%; margin-top: -20px; }
