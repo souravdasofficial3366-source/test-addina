@@ -63,9 +63,9 @@ export default function Home() {
   };
   const handleTouchEnd = (e) => {
     const touchEndX = e.changedTouches[0].screenX;
-    if (touchStartX.current - touchEndX > 50) {
+    if (touchStartX.current - touchEndX > 30) {
       nextFeatured();
-    } else if (touchEndX - touchStartX.current > 50) {
+    } else if (touchEndX - touchStartX.current > 30) {
       prevFeatured();
     }
   };

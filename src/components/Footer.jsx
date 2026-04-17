@@ -57,6 +57,7 @@ export default function Footer() {
               <li><Link to="/contact">Contact</Link></li>
               <li><Link to="/terms">Terms & Conditions</Link></li>
               <li><Link to="/privacy">Privacy Policy</Link></li>
+              <li><Link to="/admin" style={{ color: 'var(--clr-primary)', fontWeight: '600' }}>Admin Dashboard</Link></li>
             </ul>
           </div>
 
