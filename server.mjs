@@ -48,7 +48,7 @@ app.post('/api/checkout', async (req, res) => {
       line_items,
       mode: 'payment',
       success_url: `http://localhost:5173/checkout?success=true&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `http://localhost:5173/cart?canceled=true`,
+      cancel_url: `http://localhost:5173/checkout?canceled=true`,
       metadata: {
         total_items: items.reduce((sum, item) => sum + item.quantity, 0)
       }

@@ -36,7 +36,7 @@ export default async function handler(req, res) {
       },
       // Dynamic host detection for dev vs prod
       success_url: `${req.headers.origin}/checkout?success=true&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${req.headers.origin}/cart?canceled=true`,
+      cancel_url: `${req.headers.origin}/checkout?canceled=true`,
     });
 
     res.status(200).json({ url: session.url });

@@ -2,8 +2,14 @@ import { useState } from 'react';
 import { supabase } from '../supabaseClient';
 import { FcGoogle } from 'react-icons/fc';
 import { FaGithub } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import './Login.css';
+
+// Admin email(s) — add your admin email addresses here
+const ADMIN_EMAILS = [
+  'souravdasofficial3366@gmail.com',
+  // Add more admin emails as needed
+];
 
 export default function Login() {
   const [loading, setLoading] = useState(false);
@@ -12,6 +18,24 @@ export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  // Check if user came from /admin page (redirect=admin)
+  const redirectTarget = searchParams.get('redirect');
+
+  // Determine where to send user after login
+  const getRedirectPath = (userEmail) => {
+    // If user was trying to access admin and is an admin, send to admin
+    if (redirectTarget === 'admin' && ADMIN_EMAILS.includes(userEmail?.toLowerCase())) {
+      return '/admin';
+    }
+    // If user is admin and logging in normally, send to admin
+    if (ADMIN_EMAILS.includes(userEmail?.toLowerCase())) {
+      return '/admin';
+    }
+    // Regular users go to profile
+    return '/profile';
+  };
 
   const handleAction = async (e) => {
     e.preventDefault();
@@ -20,9 +44,9 @@ export default function Login() {
 
     try {
       if (mode === 'login') {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
-        navigate('/admin');
+        navigate(getRedirectPath(data.user?.email));
       } else {
         const { error } = await supabase.auth.signUp({ 
           email, 
@@ -50,7 +74,8 @@ export default function Login() {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: provider,
         options: {
-          redirectTo: window.location.origin + '/admin'
+          // Use the current origin (works for both localhost and Vercel)
+          redirectTo: window.location.origin + '/auth/callback'
         }
       });
       if (error) throw error;
