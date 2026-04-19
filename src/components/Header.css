@@ -620,6 +620,13 @@
   .desktop-only-flex { display: none !important; }
   .mobile-only-flex { display: flex !important; }
   .mobile-wishlist-popup { display: flex; }
+
+  /* Mobile search icon in actions */
+  .search-icon-mobile {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 /* Standard mobile */

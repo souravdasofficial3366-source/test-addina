@@ -66,13 +66,6 @@ export default function Header() {
         <div className="container header__inner">
           <div className="header__left-actions mobile-only-flex">
             <button
-              className="header__icon-btn search-icon-mobile"
-              onClick={() => setMobileSearchOpen(!mobileSearchOpen)}
-              aria-label="Search"
-            >
-              <FiSearch />
-            </button>
-            <button
               className={`header__hamburger ${menuOpen ? 'active' : ''}`}
               onClick={() => setMenuOpen(!menuOpen)}
               aria-label="Toggle menu"
@@ -107,6 +100,13 @@ export default function Header() {
                 <FiSearch />
               </button>
             </form>
+            <button
+              className="header__icon-btn mobile-only-flex search-icon-mobile"
+              onClick={() => setMobileSearchOpen(!mobileSearchOpen)}
+              aria-label="Search"
+            >
+              <FiSearch />
+            </button>
             <button 
               className="header__icon-btn desktop-only-flex" 
               id="wishlist-btn" 
@@ -204,7 +204,7 @@ export default function Header() {
           <Link to="/" className="sidebar__nav-link" onClick={() => setMenuOpen(false)}>Home</Link>
           <Link to="/about" className="sidebar__nav-link" onClick={() => setMenuOpen(false)}>About</Link>
           <Link to="/shop" className="sidebar__nav-link" onClick={() => setMenuOpen(false)}>Shop</Link>
-          <Link to="/shop" className="sidebar__nav-link" onClick={() => setMenuOpen(false)}>Pages</Link>
+
           <Link to="/shop" className="sidebar__nav-link" onClick={() => setMenuOpen(false)}>Blog</Link>
           <Link to="/contact" className="sidebar__nav-link" onClick={() => setMenuOpen(false)}>Contact</Link>
           <Link to={user ? "/admin" : "/login"} className="sidebar__nav-link" onClick={() => setMenuOpen(false)} style={{ borderTop: '1px solid #eee', marginTop: '10px', paddingTop: '10px', color: 'var(--clr-primary)', fontWeight: '600' }}>
